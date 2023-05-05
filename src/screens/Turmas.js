@@ -1,46 +1,65 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useEffect, useState } from "react";
 
-import { UsersThree } from 'phosphor-react-native'
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 import logoImage from '../assets/logo.png'
+import { ItemTurma } from "../components/ItemTurma";
+import { Background } from "../components/Background";
+import { Button } from "../components/Button";
 
 export function Turmas() {
 
+    const router = useRoute()
     const navigation = useNavigation()
+
+    const nomeTurma = router.params?.nomeTurma
+
+    const [turmas, setTurmas] = useState([
+        {
+            id: 0,
+            text: 'PROEJA'
+        },
+        {
+            id: 1,
+            text: 'TII'
+        }
+    ])
+
+    useEffect(() => {
+        if (nomeTurma) {
+            setTurmas([...turmas, { id: turmas.length, text: nomeTurma }])
+        }
+    }, [nomeTurma])
 
     function handleNovaTurma() {
         navigation.navigate('NovaTurma')
     }
 
-    function handleAbrirTurma() {
-        navigation.navigate('Times')
-    }
-
     return (
-        <View style={styles.container}>
+        <Background>
             <Image source={logoImage} style={styles.logo} />
             <Text style={styles.title}>Turmas</Text>
             <Text style={styles.subtitle}>Jogue com a sua turma</Text>
-            <TouchableOpacity onPress={handleAbrirTurma}>
-                <Image source={UsersThree} />
-                <Text>PROEJA</Text>
-            </TouchableOpacity>
+            
+            <FlatList
+                data={turmas}
+                keyExtractor={item => item.id}
+                renderItem={({ item }) => (
+                    <ItemTurma
+                        data={item}
+                        onPress={() => navigation.navigate('Times', {id: item.id})}
+                    />
+                )}
+            />
 
-            <TouchableOpacity style={styles.button} onPress={handleNovaTurma}>
-                <Text style={styles.buttontext}>Criar nova turma</Text>
-            </TouchableOpacity>
-        </View>
+            <Button type='primary' text='Criar nova turma' onPress={handleNovaTurma} />
+        </Background>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor: '#29292E',
-        paddingTop: 58
-    },
     logo: {
         width: 46,
         height: 55,
@@ -54,20 +73,6 @@ const styles = StyleSheet.create({
     subtitle: {
         color: '#7C7C8A',
         fontWeight: '400',
-        fontSize: 16
-    },
-    button: {
-        backgroundColor: '#00875F',
-        borderRadius: 6,
-        width: 380,
-        height: 56,
-        marginBottom: 42,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    buttontext: {
-        color: '#FFFFFF',
-        fontWeight: '700',
         fontSize: 16
     }
 })

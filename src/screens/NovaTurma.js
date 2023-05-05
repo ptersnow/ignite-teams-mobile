@@ -1,38 +1,67 @@
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useState } from "react";
 
-import { User, X } from 'phosphor-react-native'
+import { StyleSheet, Text } from "react-native";
+
+import { useNavigation } from "@react-navigation/native";
+
+import { UsersThree } from 'phosphor-react-native'
+
+import { Background } from "../components/Background";
+import { Button } from "../components/Button";
 
 export function NovaTurma() {
+
+    const navigation = useNavigation()
+
+    const [nomeTurma, setNomeTurma] = useState('')
+
+    function handleNovaTurma() {
+        navigation.navigate('Turmas', { nomeTurma: nomeTurma })
+    }
+
     return (
-        <View>
-            <Text>Nome da turma</Text>
-            <Text>Adicione a galera e separe os times</Text>
-            <TextInput placeholder="Nome do participante" />
-            <Text>Time A | Time B</Text>
+        <Background>
+            <UsersThree color='#00B37E' size={56} weight="regular" />
+            <Text style={styles.title}>Nova Turma</Text>
+            <Text style={styles.subtitle}>Crie uma turma para adicionar pessoas</Text>
+            <Input 
+                placeholder="Nome da turma"
+                onChangeText={setNomeTurma}
+            />
 
-            <View>
-                <Image source={User} />
-                <Text>Angélica</Text>
-                <Image source={X} />
-            </View>
-            <View>
-                <Image source={User} />
-                <Text>Euzilene</Text>
-                <Image source={X} />
-            </View>
-
-            <TouchableOpacity>
-                <Text>Remover turma</Text>
-            </TouchableOpacity>
-        </View>
+            <Button type="primary" text="Criar" onPress={handleNovaTurma} />
+        </Background>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#29292E'
+    title: {
+        color: '#FFFFFF',
+        fontWeight: '700',
+        fontSize: 24
     },
+    subtitle: {
+        color: '#7C7C8A',
+        fontWeight: '400',
+        fontSize: 16
+    },
+    input: {
+        backgroundColor: '#121214',
+        width: 380,
+        height: 56
+    },
+    button: {
+        backgroundColor: '#00875F',
+        borderRadius: 6,
+        width: 380,
+        height: 56,
+        marginBottom: 42,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    buttontext: {
+        color: '#FFFFFF',
+        fontWeight: '700',
+        fontSize: 16
+    }
 })
