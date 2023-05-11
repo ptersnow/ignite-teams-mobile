@@ -1,77 +1,85 @@
 import { useState } from "react";
 
-import { FlatList, StyleSheet, Text } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
+import { FlatList, StyleSheet, Text, View } from "react-native";
 
 import { Background } from "../components/Background";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
 import { Option } from "../components/Option";
 import { ItemTime } from "../components/ItemTime";
+import { Header } from "../components/Header";
 
 export function Times() {
+
+    const navigation = useNavigation()
 
     const [nomeParticipante, setNomeParticipante] = useState('')
     const [optionSelected, setOptionSelected] = useState('timeA')
 
+    const [participantes, setParticipantes] = useState({
+        timeA: [
+            {
+                id: 0,
+                nomeParticipante: 'Antenor'
+            }, 
+            { 
+                id: 1,
+                nomeParticipante: 'Beatriz'
+            }
+        ],
+        timeB: [
+            {
+                id: 0,
+                nomeParticipante: 'Agenor'
+            }, 
+            { 
+                id: 1,
+                nomeParticipante: 'Biagio'
+            }
+        ]
+    })
+
     return (
         <Background>
-            <Text style={styles.title}>Nome da turma</Text>
-            <Text style={styles.subtitle}>Adicione a galera e separe os times</Text>
-            <Input 
+            <Header
+                showBackButton={true}
+                title="Nome da turma"
+                subtitle="Adicione a galera e separe os times"
+            />
+            
+            <Input
+                value={nomeParticipante}
                 placeholder="Nome do participante"
                 onChangeText={setNomeParticipante}
             />
 
-            <Option
-                title='Time A'
-                isSelected={optionSelected == 'timeA'}
-                onPress={() => { }}
-            />
-            <Option
-                title='Time B'
-                isSelected={optionSelected == 'timeB'}
-                onPress={() => { }}
-            />
+            <View style={{ flexDirection: 'row', width: 380, gap: 10 }}>
+                <Option
+                    title='Time A'
+                    isSelected={optionSelected == 'timeA'}
+                    onPress={() => {
+                        console.log(participantes[optionSelected])
+                        setOptionSelected('timeA')
+                    }}
+                />
+                <Option
+                    title='Time B'
+                    isSelected={optionSelected == 'timeB'}
+                    onPress={() => { setOptionSelected('timeB') }}
+                />
+            </View>
             
             <FlatList
-                data={[{ id: 0, nomeParticipante: 'a' }, { id: 1, nomeParticipante: 'b' }]}
+                data={participantes[optionSelected]}
                 renderItem={({ item }) => <ItemTime nomeParticipante={item.nomeParticipante} />}
                 keyExtractor={item => item.key}
             />
             
-            <Button type='secondary' text='Remover Turma' onPress={() => { }} />
+            <Button type='secondary' text='Remover Turma' onPress={() => {
+                navigation.navigate('Turmas')
+             }} />
         </Background>
     )
 }
-
-const styles = StyleSheet.create({
-    title: {
-        color: '#FFFFFF',
-        fontWeight: '700',
-        fontSize: 24
-    },
-    subtitle: {
-        color: '#7C7C8A',
-        fontWeight: '400',
-        fontSize: 16
-    },
-    input: {
-        backgroundColor: '#121214',
-        width: 380,
-        height: 56
-    },
-    button: {
-        backgroundColor: '#AA2834',
-        borderRadius: 6,
-        width: 380,
-        height: 56,
-        marginBottom: 42,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    buttontext: {
-        color: '#FFFFFF',
-        fontWeight: '700',
-        fontSize: 16
-    }
-})

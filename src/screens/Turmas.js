@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FlatList } from "react-native";
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-import logoImage from '../assets/logo.png'
 import { ItemTurma } from "../components/ItemTurma";
 import { Background } from "../components/Background";
 import { Button } from "../components/Button";
+import { Header } from "../components/Header";
 
 export function Turmas() {
 
@@ -39,10 +39,12 @@ export function Turmas() {
 
     return (
         <Background>
-            <Image source={logoImage} style={styles.logo} />
-            <Text style={styles.title}>Turmas</Text>
-            <Text style={styles.subtitle}>Jogue com a sua turma</Text>
-            
+            <Header
+                showLogo={true}
+                title="Turmas"
+                subtitle="Jogue com a sua turma"
+            />
+
             <FlatList
                 data={turmas}
                 keyExtractor={item => item.id}
@@ -58,21 +60,3 @@ export function Turmas() {
         </Background>
     )
 }
-
-const styles = StyleSheet.create({
-    logo: {
-        width: 46,
-        height: 55,
-        marginBottom: 32
-    },
-    title: {
-        color: '#FFFFFF',
-        fontWeight: '700',
-        fontSize: 24
-    },
-    subtitle: {
-        color: '#7C7C8A',
-        fontWeight: '400',
-        fontSize: 16
-    }
-})

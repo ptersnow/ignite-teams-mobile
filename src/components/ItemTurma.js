@@ -15,8 +15,13 @@ const styles = StyleSheet.create({
     container: {
         width: 380,
         height: 96,
+        marginVertical: 12,
         flexDirection: 'row',
-        backgroundColor: '#29292E'
+        backgroundColor: '#29292E',
+        paddingHorizontal: 24,
+        paddingVertical: 32,
+        gap: 20
+        
     },
     text: {
         fontSize: 16,
