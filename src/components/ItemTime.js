@@ -1,15 +1,17 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { User, X } from "phosphor-react-native";
 
-export function ItemTime({ nomeParticipante }) {
+export function ItemTime({ nomeParticipante, onPress }) {
     return (
         <View style={styles.container}>
             <View style={styles.subcontainer}>
                 <User size={24} color="#C4C4CC" weight="fill"/>
                 <Text style={styles.text}>{nomeParticipante}</Text>
             </View>
-            <X size={24} color="#CC2937" weight="fill"/>
+            <TouchableOpacity onPress={onPress}>
+                <X size={24} color="#CC2937" weight="regular" />
+            </TouchableOpacity>
         </View>
     )
 }

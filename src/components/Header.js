@@ -1,24 +1,18 @@
-import { Image, StyleSheet, Text, View } from "react-native";
-
-import { useNavigation } from "@react-navigation/native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { CaretLeft, UsersThree } from "phosphor-react-native";
 
 import logoImage from '../assets/logo.png'
 
-export function Header({ showBackButton = false, showUsersIcon = false, showLogo = false, title, subtitle }) {
-
-    const navigation = useNavigation()
-
-    console.log('showBackButton', showBackButton)
-    console.log('showUsersIcon', showUsersIcon)
-    console.log('showLogo', showLogo)
+export function Header({ showBackButton, showUsersIcon, showLogo, onPress, title, subtitle }) {
 
     return (
         <View style={styles.container}>
             {showBackButton &&
                 <View style={styles.header}>
-                    <CaretLeft color="#FFFFFF" size={24} onPress={() => navigation.goBack()} />
+                    <TouchableOpacity onPress={onPress}>
+                        <CaretLeft color="#FFFFFF" size={24} />
+                    </TouchableOpacity>
                     <Image source={logoImage} style={styles.logo} />
                 </View>
             }

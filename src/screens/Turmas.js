@@ -4,34 +4,69 @@ import { FlatList } from "react-native";
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 
+import { Header } from "../components/Header";
+import { Button } from "../components/Button";
 import { ItemTurma } from "../components/ItemTurma";
 import { Background } from "../components/Background";
-import { Button } from "../components/Button";
-import { Header } from "../components/Header";
+import { EmptyTurmasList } from "../components/EmptyTurmasList";
 
 export function Turmas() {
 
     const router = useRoute()
     const navigation = useNavigation()
 
-    const nomeTurma = router.params?.nomeTurma
+    const request = router.params?.request
 
     const [turmas, setTurmas] = useState([
         {
             id: 0,
-            text: 'PROEJA'
+            nomeTurma: 'PROEJA',
+            participantes: {
+                timeA: [],
+                timeB: []
+            }
         },
         {
             id: 1,
-            text: 'TII'
+            nomeTurma: 'TII',
+            participantes: {
+                timeA: [],
+                timeB: []
+            }
         }
     ])
 
     useEffect(() => {
-        if (nomeTurma) {
-            setTurmas([...turmas, { id: turmas.length, text: nomeTurma }])
+        if (!request) {
+            return
         }
-    }, [nomeTurma])
+
+        const { action, time } = request
+
+        if (action == 'create') {
+            const novoTime = {
+                id: turmas.length,
+                nomeTurma: time.nomeTurma,
+                participantes: {
+                    timeA: [],
+                    timeB: []
+                }
+            }
+
+            setTurmas([...turmas, novoTime])
+        }
+        else if (action == 'update') {
+            const index = turmas.findIndex(turma => turma.id == time.id)
+            turmas[index] = time
+            setTurmas([...turmas])
+        }
+        else if (action == 'delete') {
+            const index = turmas.findIndex(turma => turma.id == time.id)
+            turmas.splice(index, 1)
+            setTurmas([...turmas])
+        }
+        
+    }, [request])
 
     function handleNovaTurma() {
         navigation.navigate('NovaTurma')
@@ -51,9 +86,10 @@ export function Turmas() {
                 renderItem={({ item }) => (
                     <ItemTurma
                         data={item}
-                        onPress={() => navigation.navigate('Times', {id: item.id})}
+                        onPress={() => navigation.navigate('Times', {time: item})}
                     />
                 )}
+                ListEmptyComponent={() => <EmptyTurmasList />}
             />
 
             <Button type='primary' text='Criar nova turma' onPress={handleNovaTurma} />

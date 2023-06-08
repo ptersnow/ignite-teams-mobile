@@ -6,7 +6,7 @@ export function ItemTurma({ data, onPress }) {
     return (
         <TouchableOpacity style={styles.container} onPress={onPress}>
             <UsersThree color='#00B37E' size={32} weight="fill" />
-            <Text style={styles.text}>{data.text}</Text>
+            <Text style={styles.text}>{data.nomeTurma}</Text>
         </TouchableOpacity>
     )
 }

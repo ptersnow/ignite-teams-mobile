@@ -14,7 +14,19 @@ export function NovaTurma() {
     const [nomeTurma, setNomeTurma] = useState('')
 
     function handleNovaTurma() {
-        navigation.navigate('Turmas', { nomeTurma: nomeTurma })
+        navigation.navigate('Turmas', { 
+            request: {
+                action: 'create',
+                time: {
+                    id: 0,
+                    nomeTurma: nomeTurma,
+                    participantes: {
+                        timeA: [],
+                        timeB: []
+                    }
+                }
+            }
+         })
     }
 
     return (
@@ -24,6 +36,7 @@ export function NovaTurma() {
                 showUsersIcon={true}
                 title="Nova Turma"
                 subtitle="Crie uma turma para adicionar pessoas"
+                onPress={() => navigation.navigate('Turmas')}
             />
             
             <Input
